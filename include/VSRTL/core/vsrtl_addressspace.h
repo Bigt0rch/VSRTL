@@ -112,6 +112,8 @@ struct IOFunctors {
    * - @return read value from peripheral
    */
   std::function<VSRTL_VT_U(VSRTL_VT_U, VSRTL_VT_U)> ioRead;
+
+  std::function<VSRTL_VT_U(VSRTL_VT_U, VSRTL_VT_U)> ioReadConst;
 };
 
 /**
@@ -148,7 +150,7 @@ public:
   virtual VSRTL_VT_U readMemConst(VSRTL_VT_U address,
                                   unsigned width) const override {
     if (auto *mmapregion = findMMapRegion(address)) {
-      return mmapregion->io.ioRead(address - mmapregion->base, width);
+      return mmapregion->io.ioReadConst(address - mmapregion->base, width);
     } else {
       return AddressSpace::readMemConst(address, width);
     }
